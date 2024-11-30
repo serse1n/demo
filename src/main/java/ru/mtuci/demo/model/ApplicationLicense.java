@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDateTime;
-import java.util.UUID;
+
+import java.util.Date;
+
 
 @Entity
 @Table(name = "license")
@@ -15,14 +16,37 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationLicense {
+
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
 
-    private String key;
-    private LocalDateTime activationDate;
-    private LocalDateTime expirationDate;
-    private String deviceId;
-    private boolean isBlocked;
+    private String code;
 
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private ApplicationUser user;
+
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private ApplicationProduct product;
+
+    @ManyToOne
+    @JoinColumn(name = "typeId")
+    private ApplicationLicenseType licenseType;
+
+    private Date firstActivationDate;
+
+    private Date endingDate;
+
+    private boolean blocked;
+
+    private int deviceCount;
+
+    private Long ownerId;
+
+    private int duration;
+
+    private String description;
 }
+

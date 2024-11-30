@@ -6,23 +6,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "device")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApplicationUser {
+public class ApplicationDevice {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String username;
-    private String password;
-    private String email;
+    private String name;
 
-    @Enumerated(EnumType.STRING)
-    private ApplicationRole role;
+    private String macAddress;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private ApplicationUser user;
 }
