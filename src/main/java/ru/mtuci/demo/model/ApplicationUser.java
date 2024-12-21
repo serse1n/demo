@@ -1,28 +1,34 @@
 package ru.mtuci.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class ApplicationUser {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
-    private String username;
-    private String password;
+    @NonNull
+    @Column(unique = true, nullable = false)
     private String email;
+    @NonNull
+    @Column(nullable = false)
+    private String username;
+    @NonNull
+    @Column(nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    private ApplicationRole role;
+    private Role role;
 }

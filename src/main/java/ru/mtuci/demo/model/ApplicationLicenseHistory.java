@@ -11,15 +11,15 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "license_history")
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationLicenseHistory {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "licenseId")
@@ -35,4 +35,3 @@ public class ApplicationLicenseHistory {
 
     private String description;
 }
-

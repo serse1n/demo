@@ -1,36 +1,39 @@
 package ru.mtuci.demo.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mtuci.demo.model.ApplicationLicense;
 import ru.mtuci.demo.model.ApplicationLicenseHistory;
 import ru.mtuci.demo.model.ApplicationUser;
 import ru.mtuci.demo.repository.LicenseHistoryRepository;
-import ru.mtuci.demo.repository.LicenseRepository;
+import ru.mtuci.demo.service.LicenseHistoryService;
 
 import java.util.Date;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
-public class LicenseHistoryServiceImpl {
-    private final LicenseHistoryRepository licenseHistoryRepository;
-    private final LicenseRepository licenseRepository;
+@AllArgsConstructor
+public class LicenseHistoryServiceImpl implements LicenseHistoryService {
 
-    public LicenseHistoryServiceImpl(LicenseHistoryRepository licenseHistoryRepository, LicenseRepository licenseRepository) {
-        this.licenseHistoryRepository = licenseHistoryRepository;
-        this.licenseRepository = licenseRepository;
+    private LicenseHistoryRepository licenseHistoryRepository;
+
+    @Override
+    public ApplicationLicenseHistory getLicenseHistoryById(UUID id) {
+        return licenseHistoryRepository.findById(id)
+                .orElse(null);
     }
 
-    public Optional<ApplicationLicenseHistory> getLicenseHistoryById(Long id) {
-        return licenseHistoryRepository.findById(id);
-    }
-
-    public ApplicationLicenseHistory createNewRecord(String status, String description, ApplicationUser user, ApplicationLicense license){
+    @Override
+    public ApplicationLicenseHistory recordLicenseChange(ApplicationLicense license,
+                                                         ApplicationUser owner,
+                                                         String status)
+    {
         ApplicationLicenseHistory newHistory = new ApplicationLicenseHistory();
         newHistory.setLicense(license);
         newHistory.setStatus(status);
         newHistory.setChangeDate(new Date());
-        newHistory.setDescription(description);
-        newHistory.setUser(user);
+        newHistory.setDescription(license.getDescription());
+        newHistory.setUser(owner);
 
         return licenseHistoryRepository.save(newHistory);
     }

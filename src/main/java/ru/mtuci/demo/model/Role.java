@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
-public enum ApplicationRole {
+public enum Role {
     USER(Set.of(Permission.READ)),
     ADMIN(Set.of(Permission.READ, Permission.MODIFICATION));
 

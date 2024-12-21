@@ -3,8 +3,9 @@ package ru.mtuci.demo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.mtuci.demo.model.ApplicationLicenseType;
 
-import java.util.Optional;
+import java.util.UUID;
 
-public interface LicenseTypeRepository extends JpaRepository<ApplicationLicenseType, Long> {
-    Optional<ApplicationLicenseType> findById(Long id);
+public interface LicenseTypeRepository extends JpaRepository<ApplicationLicenseType, UUID> {
+    ApplicationLicenseType findByName(String name);
+    void deleteByName(String name);
 }

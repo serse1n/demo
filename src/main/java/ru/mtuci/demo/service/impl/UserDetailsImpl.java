@@ -1,9 +1,10 @@
-package ru.mtuci.demo.model;
+package ru.mtuci.demo.service.impl;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.mtuci.demo.model.ApplicationUser;
 
 import java.util.Set;
 

@@ -4,20 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
+import java.util.Date;
+import java.util.UUID;
+
 @Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationTicket {
     private Date currentDate;
-    private String lifetime;
+    private Date lifetime;
     private Date activationDate;
     private Date expirationDate;
-    private Long userId;
-    private Long deviceId;
+    private UUID userId;
+    private UUID deviceId;
     private boolean licenseBlocked;
     private String digitalSignature;
     private String info;
+    private String status;
 }

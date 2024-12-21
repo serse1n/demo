@@ -1,40 +1,60 @@
 package ru.mtuci.demo.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.mtuci.demo.model.ApplicationDevice;
-import ru.mtuci.demo.model.ApplicationUser;
+import ru.mtuci.demo.model.ApplicationDeviceLicense;
 import ru.mtuci.demo.repository.DeviceRepository;
+import ru.mtuci.demo.service.DeviceLicenseService;
+import ru.mtuci.demo.service.DeviceService;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-public class DeviceServiceImpl {
+@AllArgsConstructor
+public class DeviceServiceImpl implements DeviceService {
+
     private final DeviceRepository deviceRepository;
+    private final DeviceLicenseService deviceLicenseService;
 
-    public DeviceServiceImpl(DeviceRepository deviceRepository) {
-        this.deviceRepository = deviceRepository;
+    @Override
+    public ApplicationDevice saveDevice(ApplicationDevice device) {
+        return deviceRepository.save(device);
     }
 
-    public Optional<ApplicationDevice> getDeviceById(Long id) {
-        return deviceRepository.findById(id);
+    @Override
+    public ApplicationDevice getDeviceById(UUID id) {
+        return deviceRepository.findById(id)
+                .orElse(null);
     }
 
-    public Optional<ApplicationDevice> findDeviceByInfo(ApplicationUser user, String mac_address, String name) {
-        return deviceRepository.findByUserAndMacAddressAndName(user, mac_address, name);
+    @Override
+    public ApplicationDevice getDeviceByMacAddress(String macAddress) {
+        return deviceRepository.findByMacAddress(macAddress);
     }
 
-    public ApplicationDevice registerOrUpdateDevice(String mac, String name, ApplicationUser user){
-        Optional<ApplicationDevice> device = findDeviceByInfo(user, mac, name);
-        ApplicationDevice newDevice = new ApplicationDevice();
-        if (device.isPresent()) {
-            newDevice = device.get();
+    @Override
+    public List<ApplicationDevice> getAllDevices() {
+        return deviceRepository.findAll();
+    }
+
+    @Override
+    public ApplicationDevice updateDevice(ApplicationDevice device) {
+        return deviceRepository.save(device);
+    }
+
+    @Override
+    public void deleteDevice(ApplicationDevice device) {
+
+        List<ApplicationDeviceLicense> applicationDeviceLicenses = deviceLicenseService.getDeviceLicensesByDeviceId(device.getId());
+
+        if (!applicationDeviceLicenses.isEmpty()) {
+            for (ApplicationDeviceLicense i : applicationDeviceLicenses) {
+                deviceLicenseService.deleteById(i.getId());
+            }
         }
 
-        newDevice.setName(name);
-        newDevice.setMacAddress(mac);
-        newDevice.setUser(user);
-
-        deviceRepository.save(newDevice);
-        return newDevice;
+        deviceRepository.deleteById(device.getId());
     }
 }

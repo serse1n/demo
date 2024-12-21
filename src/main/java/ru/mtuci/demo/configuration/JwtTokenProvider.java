@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import ru.mtuci.demo.service.UserService;
 
 import java.security.Key;
 import java.util.Collection;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -76,7 +76,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-
     }
 
     public Set<GrantedAuthority> getAuthorities(String token) {
@@ -92,8 +91,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         String username = getUsername(token);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
-

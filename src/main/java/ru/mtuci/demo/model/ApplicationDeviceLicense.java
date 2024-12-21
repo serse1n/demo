@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "device_license")
@@ -18,7 +19,7 @@ public class ApplicationDeviceLicense {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "licenseId")

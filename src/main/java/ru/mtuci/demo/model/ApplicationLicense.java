@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-
+import java.util.UUID;
 
 @Entity
 @Table(name = "license")
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationLicense {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     private String code;
 
@@ -41,12 +41,13 @@ public class ApplicationLicense {
 
     private boolean blocked;
 
-    private int deviceCount;
+    private Long deviceCount;
 
-    private Long ownerId;
+    @ManyToOne
+    @JoinColumn(name = "ownerId", referencedColumnName = "id")
+    private ApplicationUser ownerId;
 
-    private int duration;
+    private Long duration;
 
     private String description;
 }
-
