@@ -1,0 +1,951 @@
+{
+	"info": {
+		"_postman_id": "4b443f93-3379-49c5-b0d4-4da36b1757ed",
+		"name": "ЗИоВПО Практика 2025",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40410644"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCurrentUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/users?email=user@user.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user@user.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginAsUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@user.com\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoginAsAdmin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set(\"ADMIN_TOKEN\", jsonData.tokens.accessToken);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"1234\",\r\n    \"deviceId\": \"f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/auth/login",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@user.com\",\r\n    \"username\": \"user\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@user.com\",\r\n    \"username\": \"user\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/users/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIuY29tIiwiYXV0aCI6WyJyZWFkIiwiUk9MRV9VU0VSIl0sImlhdCI6MTczNDYwNjEyMywiZXhwIjoxNzM0NjA5NzIzfQ.bwNc4_nyewdzKAb_oZErUUu_OqFnhjytRajVl1Y4v4E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@user.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RefreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIuY29tIiwiYXV0aCI6WyJyZWFkIiwiUk9MRV9VU0VSIl0sInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJpYXQiOjE3NDYzMTI5NTcsImV4cCI6MTc0NjMxMzI1N30.Wm0wacPoJrMk22XIC9SZHeNihu4kyLAoS0fLpmQkeHI\",\r\n    \"deviceId\": \"f8c3de3d-1fea-4d7c-a8b0-29f63c4c3454\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/auth/refresh",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "GetDeviceById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllDevices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateDevice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ThinkPad\",\r\n    \"macAddress\": \"FF:FF:FF:FF:FF:FF\",\r\n    \"user\": {\r\n    \"email\": \"user@user.com\",\r\n    \"password\": \"1234\"\r\n}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/devices/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"devices",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDevice",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ThinkPad2\",\r\n    \"macAddress\": \"FF:FF:FF:FF:FF:FA\",\r\n    \"userid\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/devices/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"devices",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteDevice",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"e7f43409-ee9d-4fac-b1e5-c7fdd6910d2a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/devices/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"devices",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "CreateProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"product\",\r\n    \"isBlocked\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/products/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"products",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"product2\",\r\n    \"isBlocked\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/products/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"products",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteProduct",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"0b0080eb-f6cc-401e-9bf0-732f1a5ac4e1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/products/delete",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"products",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Licenses",
+			"item": [
+				{
+					"name": "CreateLicense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://localhost/licenses/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ActivateLicense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activationCode\": \"60b513de-d928-4c42-bdb3-9140e4609239\",\r\n    \"name\": \"HDDDDDDDdddd\",\r\n    \"mac_address\": \"BB:BB:BB:AA:AA:AA\",\r\n    \"deviceId\": \"60b513de-d928-4c42-bdb3-9140e4609240\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/licenses/activate",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetLicenseInfo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJhdXRoIjpbInJlYWQiLCJST0xFX0FETUlOIiwibW9kaWZpY2F0aW9uIl0sImlhdCI6MTczNDc0MjU3MywiZXhwIjoxNzM0NzQ2MTczfQ.b8VADdEyIovklHEm4gBOcYVHe6zugE2Rl6MyXwsJA4o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activationCode\": \"6512223d-d6e8-43d3-8385-40c86a948c85\",\r\n    \"name\": \"HPhone\",\r\n    \"mac_address\": \"FF:FF:FF:FF:FF:FF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/licenses/info",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RenewLicense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"activationCode\": \"60b513de-d928-4c42-bdb3-9140e4609239\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/licenses/renew",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"renew"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LicenseTypes",
+			"item": [
+				{
+					"name": "GetAllTypes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTypeByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateLicense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Basic\",\r\n    \"defaultDuration\": 100,\r\n    \"description\": \"100\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/licenses/types/create",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"types",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateType",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Basic2\",\r\n    \"defaultDuration\": 110,\r\n    \"description\": \"New Desctiption\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/licenses/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Signatures",
+			"item": [
+				{
+					"name": "GetActualSignatures",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GetManifest",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GetData",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GetAudit",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "GetSignatureDiff",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"since\": \"2025-03-29\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/signatures/updated-after",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"signatures",
+								"updated-after"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSignaturesByGUIDS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "AddSignature",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"threatName\": \"Example Threat6\",\r\n    \"firstBytes\": \"ABCD1234EFGH5678\",\r\n    \"remainderLength\": 4,\r\n    \"fileType\": \"malware\",\r\n    \"offsetStart\": 0,\r\n    \"offsetEnd\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/signatures/add",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"signatures",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSignature",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"signatureUUID\": \"91e21903-31c6-4121-a3f9-6fa590b1c26e\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/signatures/delete",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"signatures",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSignature",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"signatureId\": \"02ef345b-51d5-47ac-9982-59f2acc6b91a\",\r\n    \"threatName\": \"Example Threat22222\",\r\n    \"firstBytes\": \"ABCD1234EFGH5678\",\r\n    \"remainderLength\": \"\",\r\n    \"fileType\": \"malwareeee\",\r\n    \"offsetStart\": 0,\r\n    \"offsetEnd\": 101\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/signatures/update",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"signatures",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSignatureByStatus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"status\": \"DELETED\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost/signatures/by-status",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"signatures",
+								"by-status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "ADMIN_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJhdXRoIjpbInJlYWQiLCJST0xFX0FETUlOIiwibW9kaWZpY2F0aW9uIl0sImlhdCI6MTczNDU4MTU3OSwiZXhwIjoxNzM0NTg1MTc5fQ.0uCoN0NGlE8pr2vvu_C06tCpafqjeA2BW7Rn7OLjcVk"
+		},
+		{
+			"key": "USER_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQHVzZXIuY29tIiwiYXV0aCI6WyJyZWFkIiwiUk9MRV9VU0VSIl0sImlhdCI6MTczNDU4MDYwMiwiZXhwIjoxNzM0NTg0MjAyfQ.hVbN5jPkC7wy5vulGguztwuT2dp_nG8_DQGCoBUPgx0"
+		},
+		{
+			"key": "USER_TOKEN123",
+			"value": ""
+		}
+	]
+}

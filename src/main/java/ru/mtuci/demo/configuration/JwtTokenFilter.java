@@ -23,9 +23,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
 
-        //TODO: написать тело метода для получения и проверки токена
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token));
+            String tokenType = jwtTokenProvider.getTokenType(token);
+
+            if ("access".equals(tokenType)) {
+                SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(token));
+            }
         }
 
         filterChain.doFilter(request, response);

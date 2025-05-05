@@ -24,7 +24,6 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SecurityConfiguration {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
 
     @Bean
     public JwtTokenFilter jwtTokenFilter() {
@@ -39,6 +38,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(antMatcher(HttpMethod.POST, "/auth/register")).permitAll()
                         .requestMatchers(antMatcher(HttpMethod.POST, "/auth/login")).permitAll()
+                        .requestMatchers(antMatcher(HttpMethod.POST, "/auth/refresh")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

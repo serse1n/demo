@@ -1,13 +1,30 @@
 package ru.mtuci.demo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Requests {
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class LoginRequest {
+        String email;
+        String password;
+        String deviceId;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TokenRefreshRequest {
+        String refreshToken;
+        UUID deviceId;
+    }
 
     @Setter
     @Getter
@@ -81,5 +98,65 @@ public class Requests {
     @NoArgsConstructor
     public static class LicenseTypeDeleteRequest {
         String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesAddRequest {
+        private String threatName;
+        private String firstBytes;
+        private Integer remainderLength;
+        private String fileType;
+        private Integer offsetStart;
+        private Integer offsetEnd;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesUpdateRequest {
+        private UUID signatureId;
+        private String threatName;
+        private String firstBytes;
+        private Integer remainderLength;
+        private String fileType;
+        private Integer offsetStart;
+        private Integer offsetEnd;
+        private SignatureStatus status;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesByGuidsRequest {
+        private List<UUID> guids;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesDeleteRequest {
+        private UUID signatureUUID;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesByStatusRequest {
+        private SignatureStatus status;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SignaturesUpdatedAfterRequest {
+        private String since;
     }
 }

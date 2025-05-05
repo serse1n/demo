@@ -17,6 +17,7 @@ import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,23 +29,25 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
+    @Value("${jwt.access.expiration}")
+    private long accessExpiration;
+
+    @Value("${jwt.refresh.expiration}")
+    private long refreshExpiration;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    //TODO: реализовать методы создания, валидации и получения информации из JWT токена
-    public String createToken(String username, Set<GrantedAuthority> authorities) {
+    public String createAccessToken(String username, Set<GrantedAuthority> authorities) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", authorities.stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList()));
+        claims.put("token_type", "access");
 
         Date now = new Date();
-        Date expiationDate = new Date(now.getTime() + expiration);
+        Date expiationDate = new Date(now.getTime() + accessExpiration);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -52,6 +55,31 @@ public class JwtTokenProvider {
                 .setExpiration(expiationDate)
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    public String createRefreshToken(String username, UUID deviceId) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("token_type", "refresh");
+        claims.put("deviceId", deviceId);
+
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + refreshExpiration);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    public String getTokenType(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("token_type", String.class);
     }
 
     public boolean validateToken(String token) {
@@ -69,7 +97,6 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        System.out.println(getAuthorities(token));
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
