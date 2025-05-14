@@ -38,6 +38,15 @@ public class Requests {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class CreateDeviceRequest {
+        String name;
+        String macAddress;
+    }
+
+    @Setter
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class DeleteDeviceRequest {
         UUID id;
     }

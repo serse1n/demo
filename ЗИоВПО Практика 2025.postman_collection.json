@@ -290,11 +290,21 @@
 				{
 					"name": "CreateDevice",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"ThinkPad\",\r\n    \"macAddress\": \"FF:FF:FF:FF:FF:FF\",\r\n    \"user\": {\r\n    \"email\": \"user@user.com\",\r\n    \"password\": \"1234\"\r\n}\r\n}",
+							"raw": "{\r\n    \"name\": \"ThinkPad\",\r\n    \"macAddress\": \"FF:FF:FF:FF:FF:FF\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -302,12 +312,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/devices/create",
-							"protocol": "http",
+							"raw": "https://localhost/devices/create",
+							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
 							"path": [
 								"devices",
 								"create"
@@ -420,10 +429,27 @@
 				{
 					"name": "GetAllProducts",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "https://localhost/products",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"products"
+							]
 						}
 					},
 					"response": []
@@ -492,8 +518,27 @@
 				{
 					"name": "CreateLicense",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"productId\": \"28a8c76a-247a-4d80-9067-30f874d5647f\",\r\n    \"ownerId\": \"\",\r\n    \"licenseTypeId\": \"\",\r\n    \"count\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "https://localhost/licenses/create",
 							"protocol": "https",
@@ -610,10 +655,28 @@
 				{
 					"name": "GetAllTypes",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ADMIN_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "https://localhost/licenses/types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"licenses",
+								"types"
+							]
 						}
 					},
 					"response": []
@@ -653,34 +716,6 @@
 								"licenses",
 								"types",
 								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "UpdateType",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Basic2\",\r\n    \"defaultDuration\": 110,\r\n    \"description\": \"New Desctiption\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://localhost/licenses/update",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"licenses",
-								"update"
 							]
 						}
 					},

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.mtuci.demo.model.ApplicationLicense;
 import ru.mtuci.demo.model.ApplicationLicenseType;
 import ru.mtuci.demo.model.Requests;
 import ru.mtuci.demo.service.LicenseTypeService;
@@ -23,14 +24,20 @@ public class LicenseTypeController {
     @PreAuthorize("hasAnyAuthority('modification')")
     public ResponseEntity<?> findLicenseType(@RequestParam(value = "name", required = false) String name) {
         try {
-            ApplicationLicenseType applicationLicenseType = licenseTypeService.getApplicationLicenseTypeByName(name);
-
-            if (applicationLicenseType == null) {
-                List<ApplicationLicenseType> types = licenseTypeService.getAllTypes();
-                return ResponseEntity.ok(types);
+            if (name == null) {
+                List<ApplicationLicenseType> applicationLicenseType = licenseTypeService.getAllTypes();
+                return ResponseEntity.ok(applicationLicenseType);
             }
 
-            return ResponseEntity.ok(applicationLicenseType);
+            else {
+                ApplicationLicenseType applicationLicenseType = licenseTypeService.getApplicationLicenseTypeByName(name);
+
+                if (applicationLicenseType == null) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body("Application License Type not found");
+                }
+                return ResponseEntity.ok(applicationLicenseType);
+            }
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

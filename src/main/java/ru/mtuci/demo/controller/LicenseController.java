@@ -59,8 +59,7 @@ public class LicenseController {
             ApplicationLicense license = licenseService.createLicense(productId, ownerId, licenseTypeId, request.getCount());
 
             return ResponseEntity.ok(license.getId());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest()
                     .body("Something went wrong");
         }

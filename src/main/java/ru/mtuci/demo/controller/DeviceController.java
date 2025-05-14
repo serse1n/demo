@@ -48,16 +48,20 @@ public class DeviceController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createDevice(@RequestBody ApplicationDevice device,
+    public ResponseEntity<?> createDevice(@RequestBody Requests.CreateDeviceRequest deviceReq,
                                           @RequestHeader("Authorization") String authHeader) {
         authHeader = authHeader.replace("Bearer ", "");
 
+        ApplicationDevice device = new ApplicationDevice();
+
         device.setId(UUID.randomUUID());
 
-        if (deviceService.getDeviceByMacAddress(device.getMacAddress()) != null) {
+        if (deviceService.getDeviceByMacAddress(deviceReq.getMacAddress()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Device with this mac address already exists");
         }
+
+        device.setMacAddress(deviceReq.getMacAddress());
 
         if (device.getUser() == null) {
             device.setUser(userService.findUserByEmail(jwtTokenProvider.getUsername(authHeader)));
